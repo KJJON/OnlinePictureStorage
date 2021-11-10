@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using OnlinePictureStorage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace OnlinePictureStorage.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
+        [BindProperty]
+        public LoginModel Credentials { get; set; }
+
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -19,6 +23,22 @@ namespace OnlinePictureStorage.Pages
 
         public void OnGet()
         {
+
+        }
+
+        public IActionResult OnPost()
+        {
+            if (ModelState.IsValid)
+            {
+                if (Credentials.Username == "admin" && Credentials.Password == "admin")
+                {
+                    return RedirectToPage("/Home");
+                }
+                else
+                    return Page();
+            }
+            else
+                return Page();
 
         }
     }
