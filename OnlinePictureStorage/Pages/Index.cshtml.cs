@@ -13,9 +13,6 @@ namespace OnlinePictureStorage.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        [BindProperty]
-        public LoginModel Credentials { get; set; }
-
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -26,20 +23,5 @@ namespace OnlinePictureStorage.Pages
 
         }
 
-        public IActionResult OnPost()
-        {
-            if (ModelState.IsValid)
-            {
-                if (Credentials.Username == "admin" && Credentials.Password == "admin")
-                {
-                    return RedirectToPage("/Home");
-                }
-                else
-                    return Page();
-            }
-            else
-                return Page();
-
-        }
     }
 }

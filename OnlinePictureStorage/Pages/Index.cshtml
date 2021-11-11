@@ -4,31 +4,4 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="container border" style=" padding: 20px">
-    <form method="post">
-        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-        <div class="form-group row">
-            <div class="col-3">
-                <label asp-for="Credentials.Username"></label>
-            </div>
-            <div class="col-5">
-                <input type="text" asp-for="Credentials.Username" />
-            </div>
-            <span class="text-danger" asp-validation-for="Credentials.Username"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-3">
-                <label asp-for="Credentials.Password"></label>
-            </div>
-            <div class="col-5">
-                <input type="password" asp-for="Credentials.Password" />
-            </div>
-        </div>
-        <span class="text-danger" asp-validation-for="Credentials.Password"></span>
-        <div class="form-group row">
-            <div class="col-2">
-                <input type="submit" class="btn btn-primary" value="Login" />
-            </div>
-        </div>
-    </form>
-</div>
+<h1 class="text-black-50"> Index </h1>
