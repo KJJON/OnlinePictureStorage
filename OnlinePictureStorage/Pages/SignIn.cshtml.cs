@@ -9,14 +9,15 @@ using OnlinePictureStorage.ViewModels;
 
 namespace OnlinePictureStorage.Pages
 {
-    public class LoginModel : PageModel
+    public class SignInModel : PageModel
     {
+
         private readonly SignInManager<IdentityUser> signInManager;
 
         [BindProperty]
         public Login LModel { get; set; }
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public SignInModel(SignInManager<IdentityUser> signInManager)
         {
             this.signInManager = signInManager;
         }
@@ -25,14 +26,13 @@ namespace OnlinePictureStorage.Pages
         {
         }
 
-
-        public async Task<IActionResult> OnPostASync(string returnURL = null)
+        public async Task<IActionResult> OnPostAsync(string returnURL = null)
         {
             if (ModelState.IsValid)
             {
                 var result = await signInManager.PasswordSignInAsync(LModel.Email, LModel.Password, LModel.RememberMe, false);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     if (returnURL == null || returnURL == "/")
                     {
