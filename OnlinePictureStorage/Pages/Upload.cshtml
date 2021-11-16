@@ -1,0 +1,39 @@
+﻿@page
+@model OnlinePictureStorage.Pages.UploadModel
+@{
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Sign In</h1>
+
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="UModel.Date">Date</label>
+                    <input type="date" asp-for="UModel.Date" class="form-control" />
+                    <span asp-validation-for="UModel.Date" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="UModel.Photographer">Photographer</label>
+                    <input type="text" asp-for="UModel.Photographer" class="form-control" />
+                    <span asp-validation-for="UModel.Photographer" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="UModel.City">Photographer</label>
+                    <input type="text" asp-for="UModel.City" class="form-control" />
+                    <span asp-validation-for="UModel.City" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="UModel.File">Photo</label>
+                    <input type="file" accept=".bmp, .ico, .jpeg, .jpg, .gif, .tiff, .png" asp-for="UModel.File" class="form-control" />
+                    <span asp-validation-for="UModel.File" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
