@@ -12,8 +12,9 @@ namespace OnlinePictureStorage.ViewModels
         [DataType(DataType.Text)]
         public string City { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         [DataType(DataType.Date)]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         [DataType(DataType.Text)]
         public string Photographer { get; set; }
