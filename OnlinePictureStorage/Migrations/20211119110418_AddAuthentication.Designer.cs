@@ -10,7 +10,7 @@ using OnlinePictureStorage.Models;
 namespace OnlinePictureStorage.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20211111113454_AddAuthentication")]
+    [Migration("20211119110418_AddAuthentication")]
     partial class AddAuthentication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

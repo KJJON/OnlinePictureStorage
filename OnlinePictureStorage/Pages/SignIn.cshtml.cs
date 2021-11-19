@@ -36,7 +36,7 @@ namespace OnlinePictureStorage.Pages
                 {
                     if (returnURL == null || returnURL == "/")
                     {
-                        return RedirectToPage("/Index");
+                        return RedirectToPage("/Home");
                     }
                     else
                     {

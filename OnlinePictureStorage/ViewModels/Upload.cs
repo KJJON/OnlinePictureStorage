@@ -19,6 +19,7 @@ namespace OnlinePictureStorage.ViewModels
         [DataType(DataType.Text)]
         public string Photographer { get; set; }
 
+        [Required]
         [DataType(DataType.Upload)]
         public IFormFile File { get; set; }
     }

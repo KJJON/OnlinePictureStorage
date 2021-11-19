@@ -38,8 +38,22 @@ namespace OnlinePictureStorage.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+
+            List<string> exten = new List<string>();
+            exten.Add(".bmp");
+            exten.Add(".ico");
+            exten.Add(".jpeg");
+            exten.Add(".jpg");
+            exten.Add(".gif");
+            exten.Add(".tiff");
+            exten.Add(".png");
+
+
             string guid = $@"{Guid.NewGuid()}";
             string path = guid + Path.GetExtension(UModel.File.FileName);
+
+            if (!exten.Contains(Path.GetExtension(UModel.File.FileName)))
+                return RedirectToPage("/Home");
 
             BlobServiceClient blobServiceClient = new BlobServiceClient(Connections.blobConnectionString);
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(Connections.blobContainer);
@@ -56,7 +70,7 @@ namespace OnlinePictureStorage.Pages
 
             UpdateDatabase(guid, path, UModel.Photographer, UModel.City, UModel.Date);
 
-            return Page();
+            return RedirectToPage("/Home");
         }
 
         public void UpdateDatabase(string guid, string path, string photographer, string city, DateTime capturedate)
