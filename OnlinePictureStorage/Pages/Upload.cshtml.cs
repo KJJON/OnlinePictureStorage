@@ -68,12 +68,12 @@ namespace OnlinePictureStorage.Pages
 
             await blobClient.UploadAsync(UModel.File.OpenReadStream(), httpHeaders);
 
-            UpdateDatabase(guid, path, UModel.Photographer, UModel.City, UModel.Date);
+            InseertIntoDatabase(guid, path, UModel.Photographer, UModel.City, UModel.Date);
 
             return RedirectToPage("/Home");
         }
 
-        public void UpdateDatabase(string guid, string path, string photographer, string city, DateTime capturedate)
+        public void InseertIntoDatabase(string guid, string path, string photographer, string city, DateTime capturedate)
         {
 
             using (SqlConnection connection = new SqlConnection(Connections.sqlConnectionString))

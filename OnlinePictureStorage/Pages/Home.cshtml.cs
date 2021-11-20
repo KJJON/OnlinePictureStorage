@@ -18,6 +18,7 @@ namespace OnlinePictureStorage.Pages.Shared
     public class HomeModel : PageModel
     {
         public List<string> paths = new List<string>();
+        public List<string> pids = new List<string>();
 
         private readonly UserManager<IdentityUser> userManager;
 
@@ -31,6 +32,7 @@ namespace OnlinePictureStorage.Pages.Shared
             string userid = userManager.GetUserId(HttpContext.User);
 
             List<string> pathlist = new List<string>();
+            List<string> pictureids = new List<string>();
 
             using SqlConnection connection = new SqlConnection(Connections.sqlConnectionString);
             using SqlCommand command = connection.CreateCommand();
@@ -49,15 +51,18 @@ namespace OnlinePictureStorage.Pages.Shared
                 while(reader.Read())
                 {
                     pathlist.Add(Connections.blobLink +  String.Format("{0}",reader[1]));
+                    pictureids.Add(String.Format("{0}", reader[0]));
                 }
             }
             finally
             {
                 reader.Close();
                 paths = pathlist;
+                pids = pictureids;
             }
 
             connection.Close();
+
         }
     }
 }

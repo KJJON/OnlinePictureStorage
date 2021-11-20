@@ -7,19 +7,22 @@
 
     <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Home</h1>
 
+    @{int counter = 0;}
+
     @if (Model.paths.Count > 0)
     {
         <hr class="mt-2 mb-5">
         <div class="row text-center text-lg-start">
 
             @foreach (var link in Model.paths)
-             {
+            {
                 <div class="col-lg-3 col-md-4 col-6">
-                    <a href="#" class="d-block mb-4 h-100">
+                    <a asp-page="/File" asp-route-pid="@Model.pids.ElementAt(counter)" class="d-block mb-4 h-100">
                         <img class="img-fluid img-thumbnail" src="@link" alt="">
                     </a>
                 </div>
-             }
+                counter++;
+            }
         </div>
     }
     else
