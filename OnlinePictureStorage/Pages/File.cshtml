@@ -7,13 +7,13 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-sm-12 col-md-12 col-lg-4">
                 @if (Model.oorg == 'o')
-                {
+                 {
                     <h1 class="mb-3">Owner</h1>
-                }
-                else
-                {
+                 }
+                 else
+                 {
                     <h1 class="mb-3">Guest</h1>
-                }
+                 }
 
             <form method="post" enctype="multipart/form-data">
 
@@ -25,21 +25,35 @@
                     </a>
                 </div>
 
+                @if (Model.oorg == 'o')
+                {
+                    <div class="mb-3">
+                        <button class="btn btn-primary w-100" asp-page="/Share" asp-route-pid="@Model.pid">Share</button>
+                    </div>
+                }
+
+                @if (Model.oorg == 'g')
+                {
+                    <div class="mb-3">
+                        <button class="btn btn-primary w-100" asp-page-handler="DeclineShare">Decline Share</button>
+                    </div>
+                }
+
                 <div class="mb-3">
                     <label class="form-label" asp-for="EModel.Date">Date</label>
-                    <input type="date" asp-for="EModel.Date" class="form-control" placeholder="@Model.mcapturedate" />
+                    <input type="date" asp-for="EModel.Date" class="form-control" value="@Model.mcapturedate" />
                     <span asp-validation-for="EModel.Date" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" asp-for="EModel.Photographer">Photographer</label>
-                    <input type="text" asp-for="EModel.Photographer" class="form-control" placeholder="@Model.mphotographer" />
+                    <input type="text" asp-for="EModel.Photographer" class="form-control" value="@Model.mphotographer" />
                     <span asp-validation-for="EModel.Photographer" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" asp-for="EModel.City">City</label>
-                    <input type="text" asp-for="EModel.City" class="form-control" placeholder="@Model.mcity" />
+                    <input type="text" asp-for="EModel.City" class="form-control" value="@Model.mcity" />
                     <span asp-validation-for="EModel.City" class="text-danger"></span>
                 </div>
 
@@ -48,15 +62,21 @@
                 </div>
 
                 @if (Model.oorg == 'o')
-                 {
+                {
                     <div class="mb-3">
                         <button class="btn btn-primary w-100" asp-page-handler="Delete">Delete</button>
                     </div>
 
-                    <div class="mb-3">
-                        <button class="btn btn-primary w-100" asp-page="/Share" asp-route-pid="@Model.pid">Share</button>
-                    </div>
-                 }
+                    if (!(Model.mguests.Count == 0))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="GModel.Email">Email Address</label>
+                            <input type="email" asp-for="GModel.Email" class="form-control" />
+                            <span asp-validation-for="GModel.Email" class="text-danger"></span>
+                        </div>
+                        <button class="btn btn-primary w-100 mb-3" asp-page-handler="Unshare">Unshare</button>
+                    }
+                }
 
             </form>
             </div>

@@ -23,6 +23,9 @@ namespace OnlinePictureStorage.Pages
 
         [BindProperty]
         public Edit EModel { get; set; }
+        
+        [BindProperty]
+        public Guest GModel { get; set; }
 
         public string link { get; set; }
         public string fname { get; set; }
@@ -32,6 +35,7 @@ namespace OnlinePictureStorage.Pages
         public string mphotographer { get; set; }
         public string mcity { get; set; }
         public string mcapturedate { get; set; }
+        public List<string> mguests { get; set; }
 
         private readonly UserManager<IdentityUser> userManager;
 
@@ -60,6 +64,7 @@ namespace OnlinePictureStorage.Pages
             fname =  GetLink(pid);
             link = Connections.blobLink + fname;
             GetOriginal(pid);
+            GetGuests(pid);
 
             return Page();
         }
@@ -79,6 +84,24 @@ namespace OnlinePictureStorage.Pages
             await blobClient.DeleteIfExistsAsync();
 
             DeleteData(pid);
+
+            return RedirectToPage("/Home");
+        }
+
+        public  IActionResult OnPostDeclineShare()
+        {
+            string userid = userManager.GetUserId(HttpContext.User);
+
+            DeleteShare(pid, userid);
+
+            return RedirectToPage("/SharedWithMe");
+        }
+
+        public IActionResult OnPostUnshare()
+        {
+            string guestid = GetGuestId(GModel.Email);
+
+            DeleteShare(pid, guestid);
 
             return RedirectToPage("/Home");
         }
@@ -215,7 +238,7 @@ namespace OnlinePictureStorage.Pages
                 {
                     mphotographer = String.Format("{0}", reader[0]);
                     mcity = String.Format("{0}", reader[1]);
-                    mcapturedate = (Convert.ToDateTime(reader[2])).ToString("dd/MM/yyyyy");
+                    mcapturedate = (Convert.ToDateTime(reader[2])).ToString("yyyy-MM-dd");
                 }
             }
             finally
@@ -223,6 +246,66 @@ namespace OnlinePictureStorage.Pages
                 reader.Close();
             }
 
+        }
+
+        public void GetGuests(string pictureid)
+        {
+            List<string> guests = new List<string>();
+
+            using SqlConnection connection = new SqlConnection(Connections.sqlConnectionString);
+            using SqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT guestid "
+                                + "FROM SharedPictures "
+                                + "WHERE pictureid = @pid";
+
+            command.Parameters.AddWithValue("@pid", pid);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    guests.Add(String.Format("{0}", reader[0]));
+                }
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            mguests = guests;
+        }
+
+        public string GetGuestId(string email)
+        {
+            string guestid = "";
+
+            using SqlConnection connection = new SqlConnection(Connections.sqlConnectionString);
+            using SqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT  Id "
+                                + "FROM AspNetUsers "
+                                + "WHERE NormalizedEmail  = UPPER(@email)";
+
+            command.Parameters.AddWithValue("@email", email);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    guestid = String.Format("{0}", reader[0]);
+                }
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return guestid;
         }
 
         public void DeleteData(string pid)
@@ -260,5 +343,24 @@ namespace OnlinePictureStorage.Pages
             }
         }
 
+        public void DeleteShare(string pid, string uid)
+        {
+            using (SqlConnection connection = new SqlConnection(Connections.sqlConnectionString))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE "
+                                    + "FROM SharedPictures "
+                                    + "WHERE pictureid = @pid AND guestid = @uid";
+
+                command.Parameters.AddWithValue("@pid", pid);
+                command.Parameters.AddWithValue("@uid", uid);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
     }
 }
