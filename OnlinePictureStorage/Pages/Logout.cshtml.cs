@@ -29,7 +29,7 @@ namespace OnlinePictureStorage.Pages
 
         public IActionResult OnPostDontLogout()
         {
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Home");
         }
     }
 }

@@ -25,6 +25,9 @@ namespace OnlinePictureStorage.Pages
         public Edit EModel { get; set; }
 
         public string link { get; set; }
+        public string fname { get; set; }
+
+        public char oorg { get; set;  }
 
         public string mphotographer { get; set; }
         public string mcity { get; set; }
@@ -37,18 +40,28 @@ namespace OnlinePictureStorage.Pages
             this.userManager = userManager;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
             string userid = userManager.GetUserId(HttpContext.User);
 
-            if (!Ownership(pid, userid))
+            if (Ownership(pid, userid))
             {
-                this.RedirectToPage("/Privacy");
+                oorg = 'o';
+            }
+            else if(IsGuest(pid, userid))
+            {
+                oorg = 'g';
+            }
+            else
+            {
+                return RedirectToPage("/Privacy");
             }
 
-            link = GetLink(pid);
+            fname =  GetLink(pid);
+            link = Connections.blobLink + fname;
             GetOriginal(pid);
 
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -98,6 +111,36 @@ namespace OnlinePictureStorage.Pages
             }
 
             return (userid == gotuserid);
+        }
+
+        public bool IsGuest(string pictureid, string guestid)
+        {
+            string gotguestid = "";
+
+            using SqlConnection connection = new SqlConnection(Connections.sqlConnectionString);
+            using SqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT guestid "
+                                + "FROM SharedPictures "
+                                + "WHERE pictureid = @pid";
+
+            command.Parameters.AddWithValue("@pid", pid);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    gotguestid = String.Format("{0}", reader[0]);
+                }
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return (guestid == gotguestid);
         }
 
         public string GetLink(string pictureid)
@@ -216,5 +259,6 @@ namespace OnlinePictureStorage.Pages
                 connection.Close();
             }
         }
+
     }
 }

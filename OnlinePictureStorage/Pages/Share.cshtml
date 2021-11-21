@@ -1,0 +1,24 @@
+﻿@page "{pid}"
+@model OnlinePictureStorage.Pages.ShareModel
+@{
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Share</h1>
+
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="SModel.Email">Email Address</label>
+                    <input type="text" asp-for="SModel.Email" class="form-control" />
+                    <span asp-validation-for="SModel.Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" asp-page-handler="submit">Share</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
