@@ -58,7 +58,7 @@ namespace OnlinePictureStorage.Pages
             }
             else
             {
-                return RedirectToPage("/Privacy");
+                return RedirectToPage("/Home");
             }
 
             fname =  GetLink(pid);
